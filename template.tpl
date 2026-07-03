@@ -12,7 +12,7 @@ ___INFO___
     "displayName": "Amplio Data",
     "thumbnail": "data:image/png;base64,"
   },
-  "description": "Reads the consent decision Velo already recorded on the page (via a small data-layer bridge snippet — see this repo's docs/INSTALL.md) and forwards it to Google Consent Mode v2 using the exact same category-to-signal mapping as the Velo SDK, so a site that installs Velo through GTM behaves identically to one that installs the snippet directly.",
+  "description": "Reads the consent decision Velo already recorded on the page (via a small data-layer bridge snippet — see this repo's README) and forwards it to Google Consent Mode v2 using the exact same category-to-signal mapping as the Velo SDK, so a site that installs Velo through GTM behaves identically to one that installs the snippet directly.",
   "containerContexts": ["WEB"]
 }
 
@@ -279,7 +279,7 @@ window directly. GTM's own trigger system (Custom Event triggers, etc.) reads
 the data layer, not arbitrary native browser events — and Velo's SDK dispatches
 its decision as a native `window` CustomEvent (`velo:consent`), not a
 `dataLayer.push`. So a small bridge snippet (a few lines, given in full in this
-repo's docs/INSTALL.md) is required on the page to forward that event onto the
+repo's README) is required on the page to forward that event onto the
 data layer; this tag then reads it from there. This is the same shape as every
 other CMP-to-GTM integration on the gallery (Cookiebot, OneTrust, Usercentrics,
 etc.) — none of them read a CMP's native events directly either.
@@ -290,8 +290,7 @@ They cannot share a real import (GTM's sandbox has no module loader), so this
 is a deliberate, commented duplicate — any change to the SDK's mapping needs
 a matching change here, and vice versa.
 
-// VELO-STUB: submitting this template to the public Community Template
-// Gallery (Google's review + listing process at
-// https://tagmanager.google.com/gallery) has not been done. Importing and
-// using it privately in any GTM container (Templates -> New -> Import) works
-// today with no further steps.
+Submitted to the public Community Template Gallery (Google's review + listing
+process at https://tagmanager.google.com/gallery) from this repository.
+Importing and using it privately in any GTM container (Templates -> New ->
+Import) also works with no further steps.
