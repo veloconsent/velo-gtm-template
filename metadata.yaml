@@ -1,6 +1,8 @@
 homepage: "https://veloconsent.com"
 documentation: "https://veloconsent.com/google-tag-manager"
 versions:
+  - sha: "5e1af9d07a60430f731fdc69f2f0dfeab0d56b9b"
+    changeNotes: "Replace hand-authored template.tpl with GTM's own export: adds the required Terms of Service section and fixes the description field, which exceeded GTM's 200-character limit and was silently dropped on save."
   - sha: "c81a17643aab91f9cdad82388e40dc38a6f8aec1"
     changeNotes: "Fix stale references to the monorepo's docs/INSTALL.md (this standalone repo has no such file) — point at this repo's own README instead."
   - sha: "47583bb00fa28a629662460ccc36c14186bc8f12"
