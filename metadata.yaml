@@ -1,5 +1,7 @@
 homepage: "https://veloconsent.com"
 documentation: "https://veloconsent.com/google-tag-manager"
 versions:
+  - sha: "c81a17643aab91f9cdad82388e40dc38a6f8aec1"
+    changeNotes: "Fix stale references to the monorepo's docs/INSTALL.md (this standalone repo has no such file) — point at this repo's own README instead."
   - sha: "47583bb00fa28a629662460ccc36c14186bc8f12"
     changeNotes: "Initial release: forwards Velo's consent decision to Google Consent Mode v2 using the SDK's category-to-signal mapping."
