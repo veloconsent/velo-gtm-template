@@ -1,69 +1,74 @@
-# Velo – Consent Mode Bridge (GTM Community Template)
+# Velo Consent Banner (Consent Mode v2) — GTM Community Template
 
-A Google Tag Manager tag template that forwards [Velo](https://veloconsent.com)'s
-consent decision into Google Consent Mode v2, for sites that manage their tags
-through GTM instead of editing Velo's direct `<script>` snippet into their pages.
+The official Google Tag Manager tag template for [Velo](https://veloconsent.com).
+One tag installs the whole CMP through GTM — no Custom HTML, no code changes on
+the page:
 
-## What it is
-
-`template.tpl` is a real, importable GTM custom tag template — the sandboxed
-JS, template parameters, and permissions are all filled in and reviewable, and
-its consent mapping is a deliberate, commented copy of Velo's SDK
-(`gtagConsentFromCategories`, see the NOTES section inside `template.tpl` for
-why it can't be a real shared import — GTM's sandbox has no module loader).
-
-## Why a bridge snippet is needed
-
-Velo's SDK dispatches its consent decision as a native browser event
-(`window.dispatchEvent(new CustomEvent('velo:consent', { detail }))`) and
-exposes `window.Velo.consentState()`. GTM's own trigger system — Custom Event
-triggers, the ones this tag is meant to fire from — watches the **data layer**
-(`window.dataLayer`), not arbitrary native `window` events. So a few lines on
-the page forward Velo's event onto the data layer, and this tag reads it back
-from there. Every other CMP-to-GTM integration on the gallery (Cookiebot,
-OneTrust, Usercentrics, ...) has the same shape: a small bridge, then a
-template that reads the data layer.
+- Sets a **region-scoped Google Consent Mode v2 default** synchronously, before
+  any measurement tag can fire: everything non-essential denied in the EEA, UK
+  and Switzerland; Velo's opt-out model (granted until the visitor says
+  otherwise, with Global Privacy Control honoured) everywhere else.
+- Loads Velo's SDK (`velo.js`), which renders the consent banner, resolves
+  regional policy, sends `gtag('consent', 'update', …)` on every decision, and
+  mirrors the decision to Microsoft UET and Meta where present.
+- Pushes a **`velo_consent_update`** event (with a `velo_categories` object) to
+  the data layer on every path consent becomes effective — including a stored
+  decision re-applied for a returning visitor — so you can fire consent-gated
+  tags from a plain Custom Event trigger.
 
 ## Installing
 
-1. Add this bridge snippet as an early Custom HTML tag, firing on all pages,
-   before any tag that should be consent-gated:
-
-   ```html
-   <script>
-     window.addEventListener('velo:consent', function (e) {
-       window.dataLayer = window.dataLayer || [];
-       window.dataLayer.push({
-         event: 'velo_consent_update',
-         velo_categories: e.detail.categories,
-       });
-     });
-   </script>
-   ```
-
-2. In Tag Manager, open the container → **Templates** → **Tag Templates** →
-   **New** → the "⋮" menu in the top right → **Import** (or, once this
-   template is listed in the gallery, **Search Gallery** → "Velo – Consent
-   Mode Bridge" → **Add to workspace**).
-3. Create a **Custom Event** trigger matching the event name the bridge
-   snippet pushes (`velo_consent_update`).
-4. Add a tag using the "Velo – Consent Mode Bridge" template, firing on that
-   trigger. The `dataLayerKey` field defaults to `velo_categories`, matching
-   the bridge snippet's default — only change it if you changed the bridge
-   snippet too.
+1. In Tag Manager: **Templates → Tag Templates → Search Gallery** → search
+   "Velo" → **Add to workspace**. (Until the gallery listing is live, or for a
+   private install: download `template.tpl` from this repository, then
+   **Templates → Tag Templates → New → ⋮ → Import**.)
+2. Create a tag from the template. Fields:
+   - **Velo site ID** — from your Velo dashboard; leave `default` for a
+     single-site account.
+   - **Banner theme** — light or dark card.
+   - **Velo API endpoint** — optional; only set it if Velo issued one for your
+     account. It enables consent receipts and remote banner configuration. The
+     banner and Consent Mode work fully without it.
+   - **Advanced** — banner text overrides, `ads_data_redaction`,
+     `url_passthrough`.
+3. Fire the tag on the **Consent Initialization - All Pages** trigger. This is
+   the one Google provides specifically for consent defaults — it runs before
+   every other trigger.
+4. Optional: to fire your own tags only after a decision, add a **Custom
+   Event** trigger for `velo_consent_update` and a Data Layer Variable for
+   `velo_categories` (an object of booleans: `analytics`, `ads`, `functional`,
+   `personalization`). For Google tags you usually don't need this — Consent
+   Mode's built-in consent checks handle them.
 5. Publish the container version.
 
-Full install guide, including direct-snippet and region-behaviour details:
-https://veloconsent.com/google-tag-manager
+Full install guide with screenshots: https://veloconsent.com/google-tag-manager
 
-## Keeping the consent mapping honest
+## How configuration travels
 
-This template's sandboxed JS is a hand-kept copy of Velo's SDK-side consent
-mapping, because GTM's sandbox has no module loader to share a real import
-across the boundary. If Velo's mapping ever changes (a new category, a
-different Consent Mode signal), this template's copy has to change with it in
-the same release — see the source-of-truth SDK and the rest of the Velo
-codebase at https://github.com/leonaves/velo.
+GTM's sandboxed `injectScript(url)` API cannot set `data-*` attributes on the
+script element it creates (and `document.currentScript` is null for dynamic
+injection). So this template passes configuration as query parameters on
+`velo.js`'s own `src` — `…/v1/velo.js?site=acme&theme=dark` — and the SDK reads
+its own src query string as a first-class config channel (`srcQueryConfig` in
+`banner-sdk/src/config.js`). `data-*` attributes still win over query
+parameters when both are present, so inline installs behave exactly as before.
+
+## Keeping the region list honest
+
+The template's sandboxed JS carries a hand-kept copy of the SDK's
+`OPT_IN_REGIONS` list (EU 27 + EEA non-EU + UK + Switzerland), because GTM's
+sandbox has no module loader to share a real import across the boundary. If
+the SDK's list ever changes, the template's copy must change in the same
+release — the source of truth lives in the Velo codebase at
+https://github.com/leonaves/velo (`packages/banner-sdk/src/payload.js`).
+
+## History
+
+This template replaces the earlier "Velo – Consent Mode Bridge" template from
+this same repository. The bridge (and the Custom HTML snippet it required) is
+obsolete: the SDK now pushes `velo_consent_update` to the data layer itself
+and has always sent its own `gtag` consent updates, so there is nothing left
+to bridge.
 
 ## Support
 
