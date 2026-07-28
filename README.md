@@ -1,4 +1,4 @@
-# Velo Consent Banner (Consent Mode v2) — GTM Community Template
+# Velo CMP — GTM Community Template
 
 The official Google Tag Manager tag template for [Velo](https://veloconsent.com).
 One tag installs the whole CMP through GTM — no Custom HTML, no code changes on

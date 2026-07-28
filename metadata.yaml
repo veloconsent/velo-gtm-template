@@ -1,6 +1,8 @@
 homepage: "https://veloconsent.com"
 documentation: "https://veloconsent.com/google-tag-manager"
 versions:
+  - sha: "17247ddcce218a9bebb4f1420539440ec91a2f10"
+    changeNotes: "Rename the template to Velo CMP — the tag is the full CMP, not just a banner, and the previous name buried that behind a parenthetical. No behaviour, parameter or permission changes."
   - sha: "431e944c66b7223573689ba8079633e944530eab"
     changeNotes: "Full CMP template: one tag now sets region-scoped Consent Mode v2 defaults (EEA/UK/CH opt in) and loads the Velo SDK with site/theme/API config as query params — the bridge tag and its Custom HTML snippet are retired."
   - sha: "bb7d657d528b7053585a975e357f65d298759ed8"
