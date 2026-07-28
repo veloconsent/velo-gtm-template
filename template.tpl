@@ -13,7 +13,7 @@ ___INFO___
   "id": "cvt_temp_public_id",
   "version": 1,
   "securityGroups": [],
-  "displayName": "Velo Consent Banner (Consent Mode v2)",
+  "displayName": "Velo CMP",
   "categories": [
     "UTILITY"
   ],
