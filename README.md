@@ -29,7 +29,9 @@ the page:
    - **Velo API endpoint** — optional; only set it if Velo issued one for your
      account. It enables consent receipts and remote banner configuration. The
      banner and Consent Mode work fully without it.
-   - **Advanced** — banner text overrides, `ads_data_redaction`,
+   - **Advanced** — banner text overrides, **Cookie policy URL** (adds a
+     "Cookie policy" link to the end of the first-layer message — a path like
+     `/cookies` or a full `https://` URL), `ads_data_redaction`,
      `url_passthrough`.
 3. Fire the tag on the **Consent Initialization - All Pages** trigger. This is
    the one Google provides specifically for consent defaults — it runs before

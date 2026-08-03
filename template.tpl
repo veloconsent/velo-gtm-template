@@ -95,6 +95,22 @@ ___TEMPLATE_PARAMETERS___
         "help": "Optional. Replaces the default first-layer message. Same precedence note as the heading override."
       },
       {
+        "type": "TEXT",
+        "name": "policyUrl",
+        "displayName": "Cookie policy URL",
+        "simpleValueType": true,
+        "defaultValue": "",
+        "valueHint": "/cookies",
+        "help": "Optional. Adds a \"Cookie policy\" link to the end of the first-layer message, pointing here. A path on this site (/cookies) or a full https:// URL — the SDK ignores anything else.",
+        "valueValidators": [
+          {
+            "type": "REGEX",
+            "args": ["^$|^(https?://|[/#?])[^\\s\"'<>]*$"],
+            "errorMessage": "Use a path starting with / (for example /cookies) or a full http(s):// URL."
+          }
+        ]
+      },
+      {
         "type": "CHECKBOX",
         "name": "adsDataRedaction",
         "checkboxText": "Redact ads data when ad_storage is denied (ads_data_redaction)",
@@ -186,6 +202,13 @@ if (data.heading) {
 }
 if (data.message) {
   params.push('message=' + encodeUriComponent(data.message));
+}
+// The "Cookie policy" link at the end of the first-layer message. The SDK
+// sanitizes this again on arrival (config.js sanitizePolicyUrl: same-document
+// paths and http(s) only) — the field validator here is the friendly half of
+// that rule, not the security boundary.
+if (data.policyUrl) {
+  params.push('policy=' + encodeUriComponent(data.policyUrl));
 }
 const url = params.length ? SDK_URL + '?' + params.join('&') : SDK_URL;
 
@@ -504,6 +527,7 @@ scenarios:
         apiEndpoint: '',
         heading: '',
         message: '',
+        policyUrl: '',
         adsDataRedaction: false,
         urlPassthrough: false
     };
@@ -541,6 +565,7 @@ scenarios:
         apiEndpoint: 'https://app.veloconsent.com',
         heading: '',
         message: '',
+        policyUrl: '',
         adsDataRedaction: false,
         urlPassthrough: false
     };
@@ -559,6 +584,31 @@ scenarios:
     assertThat(injectedUrl).isEqualTo(
         'https://veloconsent.com/v1/velo.js?site=acme&theme=dark&api=https%3A%2F%2Fapp.veloconsent.com'
     );
+- name: A cookie policy URL travels as an encoded policy parameter
+  code: |-
+    const mockData = {
+        siteId: 'default',
+        theme: 'light',
+        apiEndpoint: '',
+        heading: '',
+        message: '',
+        policyUrl: '/cookies',
+        adsDataRedaction: false,
+        urlPassthrough: false
+    };
+
+    mock('setDefaultConsentState', function() {});
+
+    let injectedUrl = null;
+    mock('injectScript', function(url, onSuccess, onFailure) {
+        injectedUrl = url;
+        onSuccess();
+    });
+
+    runCode(mockData);
+
+    assertApi('gtmOnSuccess').wasCalled();
+    assertThat(injectedUrl).isEqualTo('https://veloconsent.com/v1/velo.js?policy=%2Fcookies');
 - name: Redaction and URL passthrough flags reach gtagSet
   code: |-
     const mockData = {
@@ -567,6 +617,7 @@ scenarios:
         apiEndpoint: '',
         heading: '',
         message: '',
+        policyUrl: '',
         adsDataRedaction: true,
         urlPassthrough: true
     };
@@ -593,6 +644,7 @@ scenarios:
         apiEndpoint: '',
         heading: '',
         message: '',
+        policyUrl: '',
         adsDataRedaction: false,
         urlPassthrough: false
     };
