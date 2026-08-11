@@ -22,7 +22,7 @@ ___INFO___
     "displayName": "Amplio Data",
     "thumbnail": "data:image/png;base64,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"
   },
-  "description": "Loads the Velo consent banner and sets region aware Google Consent Mode v2 defaults (EEA, UK and Switzerland opt in). Installs Velo with no page code: configure site, theme and API endpoint here.",
+  "description": "Loads the Velo consent banner and sets region aware Google Consent Mode v2 defaults (EEA, UK, Switzerland and Brazil opt in). Installs Velo with no page code: configure site, theme and API here.",
   "containerContexts": [
     "WEB"
   ]
@@ -138,7 +138,8 @@ const setDefaultConsentState = require('setDefaultConsentState');
 const gtagSet = require('gtagSet');
 const encodeUriComponent = require('encodeUriComponent');
 
-// Opt-in jurisdictions (EU 27, then EEA non-EU + UK + Switzerland). This is a
+// Opt-in jurisdictions (EU 27, then EEA non-EU + UK + Switzerland, then Brazil
+// under the LGPD as of the SDK's 2026-08-05 Portuguese launch). This is a
 // deliberate, hand-kept copy of packages/banner-sdk/src/payload.js's
 // OPT_IN_REGIONS in the Velo repository — GTM's sandbox has no module loader,
 // so the two cannot share an import. If that list ever changes, this one must
@@ -147,7 +148,7 @@ const encodeUriComponent = require('encodeUriComponent');
 const OPT_IN_REGIONS = [
   'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE',
   'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE',
-  'IS', 'LI', 'NO', 'GB', 'CH'
+  'IS', 'LI', 'NO', 'GB', 'CH', 'BR'
 ];
 
 // 1) The safety-critical part, done synchronously before anything loads over
@@ -519,7 +520,7 @@ ___WEB_PERMISSIONS___
 ___TESTS___
 
 scenarios:
-- name: Default fields load the bare SDK URL and scope the denied default to 32 regions
+- name: Default fields load the bare SDK URL and scope the denied default to 33 regions
   code: |-
     const mockData = {
         siteId: 'default',
@@ -555,7 +556,7 @@ scenarios:
     assertThat(defaults[0].ad_storage).isEqualTo('denied');
     assertThat(defaults[0].analytics_storage).isEqualTo('denied');
     assertThat(defaults[0].security_storage).isEqualTo('granted');
-    assertThat(defaults[0].region.length).isEqualTo(32);
+    assertThat(defaults[0].region.length).isEqualTo(33);
     assertThat(defaults[0].wait_for_update).isEqualTo(500);
 - name: Site, theme and API endpoint travel as encoded query parameters
   code: |-
@@ -664,7 +665,7 @@ ___NOTES___
 
 Created for Velo (a product of Amplio Data). One tag installs the whole CMP:
 it sets a region-scoped Google Consent Mode v2 default synchronously (EEA +
-UK + Switzerland denied until the visitor decides; rest of world follows
+UK + Switzerland + Brazil denied until the visitor decides; rest of world follows
 Velo's opt-out model), then injects the Velo SDK (velo.js), which renders the
 banner, resolves regional policy, applies Global Privacy Control, sends
 gtag consent updates on every decision, and pushes a `velo_consent_update`

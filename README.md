@@ -5,8 +5,8 @@ One tag installs the whole CMP through GTM — no Custom HTML, no code changes o
 the page:
 
 - Sets a **region-scoped Google Consent Mode v2 default** synchronously, before
-  any measurement tag can fire: everything non-essential denied in the EEA, UK
-  and Switzerland; Velo's opt-out model (granted until the visitor says
+  any measurement tag can fire: everything non-essential denied in the EEA, UK,
+  Switzerland and Brazil; Velo's opt-out model (granted until the visitor says
   otherwise, with Global Privacy Control honoured) everywhere else.
 - Loads Velo's SDK (`velo.js`), which renders the consent banner, resolves
   regional policy, sends `gtag('consent', 'update', …)` on every decision, and
@@ -58,7 +58,7 @@ parameters when both are present, so inline installs behave exactly as before.
 ## Keeping the region list honest
 
 The template's sandboxed JS carries a hand-kept copy of the SDK's
-`OPT_IN_REGIONS` list (EU 27 + EEA non-EU + UK + Switzerland), because GTM's
+`OPT_IN_REGIONS` list (EU 27 + EEA non-EU + UK + Switzerland + Brazil), because GTM's
 sandbox has no module loader to share a real import across the boundary. If
 the SDK's list ever changes, the template's copy must change in the same
 release — the source of truth lives in the Velo codebase at
