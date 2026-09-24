@@ -1,6 +1,8 @@
 homepage: "https://veloconsent.com"
 documentation: "https://veloconsent.com/google-tag-manager"
 versions:
+  - sha: "6f90f4ad5cccd1d4713abef77ddef89a668c9ed7"
+    changeNotes: "The Velo API endpoint field now defaults to https://app.veloconsent.com, and an empty field falls back to it. Before, a tag installed with the blank default showed the banner but recorded no consent and ignored dashboard banner settings. No permission changes."
   - sha: "5b1c777ec42834b65bd9156378d6b5850d737f30"
     changeNotes: "Add Brazil (LGPD) to the region-scoped consent default, matching the Velo SDK's 2026-08-05 change: BR now starts denied until the visitor decides, so a template install and a direct snippet install scope the exact same 33 regions. No new fields or permissions."
   - sha: "8ecafb7d568ae61f3a9d82dfd997b9c0e652e2f0"
