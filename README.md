@@ -26,9 +26,10 @@ the page:
    - **Velo site ID** — from your Velo dashboard; leave `default` for a
      single-site account.
    - **Banner theme** — light or dark card.
-   - **Velo API endpoint** — optional; only set it if Velo issued one for your
-     account. It enables consent receipts and remote banner configuration. The
-     banner and Consent Mode work fully without it.
+   - **Velo API endpoint** — keep the default `https://app.veloconsent.com`.
+     It is where each visitor's choice is recorded (your dashboard's consent
+     log) and where the banner settings you save in Velo are loaded from. An
+     empty field falls back to the same address.
    - **Advanced** — banner text overrides, **Cookie policy URL** (adds a
      "Cookie policy" link to the end of the first-layer message — a path like
      `/cookies` or a full `https://` URL), `ads_data_redaction`,

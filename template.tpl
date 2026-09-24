@@ -67,10 +67,10 @@ ___TEMPLATE_PARAMETERS___
   {
     "type": "TEXT",
     "name": "apiEndpoint",
-    "displayName": "Velo API endpoint (optional)",
+    "displayName": "Velo API endpoint",
     "simpleValueType": true,
-    "defaultValue": "",
-    "help": "Leave blank unless Velo has issued your account an API endpoint. When set, the banner records tamper-evident consent receipts and loads your remote banner configuration (copy, categories, experiments) from it. The banner and Consent Mode work fully without it."
+    "defaultValue": "https://app.veloconsent.com",
+    "help": "Where the banner records each visitor's choice (the consent log in your Velo dashboard) and loads the banner settings you saved there. Keep https://app.veloconsent.com unless Velo gave you a different endpoint. If this is left empty the tag still uses https://app.veloconsent.com."
   },
   {
     "type": "GROUP",
@@ -195,9 +195,12 @@ if (data.siteId && data.siteId !== 'default') {
 if (data.theme === 'dark') {
   params.push('theme=dark');
 }
-if (data.apiEndpoint) {
-  params.push('api=' + encodeUriComponent(data.apiEndpoint));
-}
+// Always send an API endpoint. Without one the SDK shows the banner and sets
+// Consent Mode but records nothing and ignores the dashboard's banner settings,
+// which is never what an install wants. Tags saved while this field defaulted
+// to blank fall back here, so they start recording on the template update.
+const DEFAULT_API = 'https://app.veloconsent.com';
+params.push('api=' + encodeUriComponent(data.apiEndpoint || DEFAULT_API));
 if (data.heading) {
   params.push('heading=' + encodeUriComponent(data.heading));
 }
@@ -520,7 +523,7 @@ ___WEB_PERMISSIONS___
 ___TESTS___
 
 scenarios:
-- name: Default fields load the bare SDK URL and scope the denied default to 33 regions
+- name: Default fields load the SDK with the default API endpoint and scope the denied default to 33 regions
   code: |-
     const mockData = {
         siteId: 'default',
@@ -551,7 +554,7 @@ scenarios:
     runCode(mockData);
 
     assertApi('gtmOnSuccess').wasCalled();
-    assertThat(injectedUrl).isEqualTo('https://veloconsent.com/v1/velo.js');
+    assertThat(injectedUrl).isEqualTo('https://veloconsent.com/v1/velo.js?api=https%3A%2F%2Fapp.veloconsent.com');
     assertThat(defaults.length).isEqualTo(1);
     assertThat(defaults[0].ad_storage).isEqualTo('denied');
     assertThat(defaults[0].analytics_storage).isEqualTo('denied');
@@ -609,7 +612,7 @@ scenarios:
     runCode(mockData);
 
     assertApi('gtmOnSuccess').wasCalled();
-    assertThat(injectedUrl).isEqualTo('https://veloconsent.com/v1/velo.js?policy=%2Fcookies');
+    assertThat(injectedUrl).isEqualTo('https://veloconsent.com/v1/velo.js?api=https%3A%2F%2Fapp.veloconsent.com&policy=%2Fcookies');
 - name: Redaction and URL passthrough flags reach gtagSet
   code: |-
     const mockData = {
