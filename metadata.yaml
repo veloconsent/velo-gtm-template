@@ -1,6 +1,8 @@
 homepage: "https://veloconsent.com"
 documentation: "https://veloconsent.com/google-tag-manager"
 versions:
+  - sha: "c083364c4625edaaa173df3b9e33df98883fc5f0"
+    changeNotes: "Adds a Banner language field: the visitor's browser language (default, unchanged) or Page language, which follows the page's html lang so a multilingual site gets a banner in the page's language. No permission changes."
   - sha: "6f90f4ad5cccd1d4713abef77ddef89a668c9ed7"
     changeNotes: "The Velo API endpoint field now defaults to https://app.veloconsent.com, and an empty field falls back to it. Before, a tag installed with the blank default showed the banner but recorded no consent and ignored dashboard banner settings. No permission changes."
   - sha: "5b1c777ec42834b65bd9156378d6b5850d737f30"
