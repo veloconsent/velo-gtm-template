@@ -26,6 +26,9 @@ the page:
    - **Velo site ID** — from your Velo dashboard; leave `default` for a
      single-site account.
    - **Banner theme** — light or dark card.
+   - **Banner language** — the visitor's browser language (default), or **Page
+     language** for a multilingual site: the banner follows the page's
+     `<html lang>`, so `/es` gets a Spanish banner whatever the browser says.
    - **Velo API endpoint** — keep the default `https://app.veloconsent.com`.
      It is where each visitor's choice is recorded (your dashboard's consent
      log) and where the banner settings you save in Velo are loaded from. An

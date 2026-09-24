@@ -73,6 +73,25 @@ ___TEMPLATE_PARAMETERS___
     "help": "Where the banner records each visitor's choice (the consent log in your Velo dashboard) and loads the banner settings you saved there. Keep https://app.veloconsent.com unless Velo gave you a different endpoint. If this is left empty the tag still uses https://app.veloconsent.com."
   },
   {
+    "type": "SELECT",
+    "name": "locale",
+    "displayName": "Banner language",
+    "macrosInSelect": false,
+    "selectItems": [
+      {
+        "value": "auto",
+        "displayValue": "Visitor's browser language"
+      },
+      {
+        "value": "page",
+        "displayValue": "Page language (the page's html lang)"
+      }
+    ],
+    "simpleValueType": true,
+    "defaultValue": "auto",
+    "help": "Choose Page language on a multilingual site so the banner speaks the language of the page (/es in Spanish, /fr in French). It reads the lang attribute of the page's html tag and falls back to the browser language when the page names a language Velo does not serve."
+  },
+  {
     "type": "GROUP",
     "name": "advancedGroup",
     "displayName": "Advanced",
@@ -194,6 +213,9 @@ if (data.siteId && data.siteId !== 'default') {
 }
 if (data.theme === 'dark') {
   params.push('theme=dark');
+}
+if (data.locale === 'page') {
+  params.push('locale=page');
 }
 // Always send an API endpoint. Without one the SDK shows the banner and sets
 // Consent Mode but records nothing and ignores the dashboard's banner settings,
@@ -613,6 +635,34 @@ scenarios:
 
     assertApi('gtmOnSuccess').wasCalled();
     assertThat(injectedUrl).isEqualTo('https://veloconsent.com/v1/velo.js?api=https%3A%2F%2Fapp.veloconsent.com&policy=%2Fcookies');
+- name: Page language travels as locale=page
+  code: |-
+    const mockData = {
+        siteId: 'acme',
+        theme: 'light',
+        locale: 'page',
+        apiEndpoint: '',
+        heading: '',
+        message: '',
+        policyUrl: '',
+        adsDataRedaction: false,
+        urlPassthrough: false
+    };
+
+    mock('setDefaultConsentState', function() {});
+
+    let injectedUrl = null;
+    mock('injectScript', function(url, onSuccess, onFailure) {
+        injectedUrl = url;
+        onSuccess();
+    });
+
+    runCode(mockData);
+
+    assertApi('gtmOnSuccess').wasCalled();
+    assertThat(injectedUrl).isEqualTo(
+        'https://veloconsent.com/v1/velo.js?site=acme&locale=page&api=https%3A%2F%2Fapp.veloconsent.com'
+    );
 - name: Redaction and URL passthrough flags reach gtagSet
   code: |-
     const mockData = {
